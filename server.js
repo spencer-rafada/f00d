@@ -2,6 +2,16 @@ const express = require(`express`);
 const { graphqlHTTP } = require(`express-graphql`);
 const { schema, resolver } = require(`./schema`);
 const envs = require(`./config/config`);
+const { db } = require(`./db`);
+
+db.once(`open`, () => {
+  console.log(`Connected to MongoDB`);
+});
+
+db.on(`error`, () => {
+  console.log(`Error on connecting to MongoDB`, err);
+  process.exit(1);
+});
 
 const app = express();
 
